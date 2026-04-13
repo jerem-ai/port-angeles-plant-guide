@@ -786,9 +786,41 @@ function resistancePips(level) {
 // ── CARD IMAGE HTML ──
 function cardImgHtml(p) {
   if (p.img) {
-    return `<div class="card-img-placeholder">🌿</div><img src="${escHtml(p.img)}" alt="${escHtml(p.name)}" loading="lazy" class="lazy-plant-img">`;
+    return `<div class="card-img-placeholder">🌿</div><img src="${escHtml(p.img)}" alt="${escHtml(p.name)}" loading="lazy" class="lazy-plant-img" onerror="handleCardImgError(this)">`;
   }
   return `<div class="card-img-placeholder">🌿</div>`;
+}
+
+async function fetchWikiImageForPlant(plant) {
+  const sci = plant.sci.split(' ').slice(0,2).join(' ');
+  try {
+    const url = `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&pithumbsize=500&format=json&origin=*&titles=${encodeURIComponent(sci)}`;
+    const r = await fetch(url);
+    if (!r.ok) return null;
+    const d = await r.json();
+    const pages = d.query?.pages || {};
+    const page = Object.values(pages)[0];
+    return page?.thumbnail?.source || null;
+  } catch(e) { return null; }
+}
+
+function handleCardImgError(imgEl) {
+  imgEl.style.display = 'none';
+  const card = imgEl.closest('[data-plant-name]');
+  if (!card) return;
+  const name = card.dataset.plantName;
+  const plant = PLANTS.find(p => p.name === name);
+  if (!plant) return;
+  fetchWikiImageForPlant(plant).then(wikiUrl => {
+    if (!wikiUrl) return;
+    plant.img = wikiUrl;
+    imgEl.src = wikiUrl;
+    imgEl.style.display = '';
+    // update any timeline thumbs already in the DOM
+    document.querySelectorAll('.tl-thumb-img').forEach(el => {
+      if (el.dataset.plantName === name) el.style.backgroundImage = `url('${wikiUrl}')`;
+    });
+  });
 }
 
 // ── RENDER ──
@@ -872,7 +904,7 @@ function renderCalendar(plants, garden) {
     const months = p.months || [];
     const status = getStatus(p.name);
     const thumbHtml = p.img
-      ? `<div class="tl-thumb-img" style="background-image:url('${escHtml(p.img)}')"></div>`
+      ? `<div class="tl-thumb-img" data-plant-name="${escHtml(p.name)}" style="background-image:url('${escHtml(p.img)}')"></div>`
       : `<div class="tl-thumb">🌿</div>`;
     const cells = Array.from({length:12},(_,mi) => {
       const m = mi+1;
