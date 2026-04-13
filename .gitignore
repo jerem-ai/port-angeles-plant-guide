@@ -1,0 +1,6 @@
+# macOS
+.DS_Store
+
+# Large local assets (photos — app falls back to Wikipedia images without these)
+Archive/
+Archive.zip

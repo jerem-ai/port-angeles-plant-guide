@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Port Angeles Plant Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --bg:         oklch(96.5% 0.012 82);
+  --surface:    oklch(99% 0.006 80);
+  --surface2:   oklch(93.5% 0.016 80);
+  --border:     oklch(88% 0.018 80);
+  --forest:     oklch(34% 0.12 148);
+  --forest-mid: oklch(48% 0.11 145);
+  --sage:       oklch(66% 0.09 138);
+  --amber:      oklch(70% 0.15 72);
+  --rust:       oklch(50% 0.14 42);
+  --sky:        oklch(72% 0.07 215);
+  --ink:        oklch(17% 0.025 65);
+  --ink-mid:    oklch(42% 0.025 65);
+  --ink-light:  oklch(60% 0.02 72);
+  --red:        oklch(50% 0.18 25);
+  --shadow:     0 1px 6px oklch(17% 0.02 65 / 0.08);
+  --shadow-md:  0 4px 16px oklch(17% 0.02 65 / 0.11);
+  --shadow-lg:  0 8px 28px oklch(17% 0.02 65 / 0.16);
+  --r:          12px;
+  --r-sm:       8px;
+}
+
+body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--ink); min-height:100vh; }
+
+/* ── HEADER ── */
+.header {
+  background: oklch(28% 0.09 148);
+  color: #fff;
+  padding: clamp(28px,5vw,48px) clamp(16px,4vw,40px) clamp(24px,4vw,40px);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.header-leaves {
+  position: absolute; inset: 0; opacity: 0.07; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'%3E%3Cpath d='M60 10 Q80 30 60 60 Q40 30 60 10Z' fill='%23fff'/%3E%3Cpath d='M20 50 Q50 55 50 80 Q30 65 20 50Z' fill='%23fff'/%3E%3Cpath d='M100 50 Q70 55 70 80 Q90 65 100 50Z' fill='%23fff'/%3E%3Cpath d='M40 90 Q60 85 70 110 Q50 105 40 90Z' fill='%23fff'/%3E%3C/svg%3E");
+}
+.header h1 {
+  font-family:'Cormorant Garamond',serif;
+  font-style:italic;
+  font-size: clamp(28px,6vw,54px);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  position: relative;
+  line-height: 1.1;
+}
+.header p {
+  font-size: clamp(13px,2.5vw,16px);
+  opacity: 0.72;
+  margin-top: 10px;
+  position: relative;
+  font-weight: 400;
+}
+.header-badges {
+  display: flex; gap: 10px; justify-content: center;
+  margin-top: 18px; flex-wrap: wrap; position: relative;
+}
+.badge {
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.22);
+  border-radius: 20px;
+  padding: 4px 14px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* ── CONTROLS ── */
+.controls {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+.controls-main {
+  max-width: 1400px; margin: 0 auto;
+  padding: 10px 20px;
+  display: flex; gap: 10px; align-items: center; flex-wrap: wrap;
+}
+.search-wrap { flex: 1; min-width: 180px; position: relative; }
+.search-wrap svg { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:var(--ink-light); pointer-events:none; }
+#search {
+  width: 100%; padding: 9px 10px 9px 34px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-sm);
+  font-size: 14px; font-family:'DM Sans',sans-serif;
+  background: var(--bg); color: var(--ink); outline: none;
+  transition: border-color .2s;
+}
+#search:focus { border-color: var(--forest); }
+#search::placeholder { color: var(--ink-light); }
+
+.filter-toggle-btn {
+  display: none; /* shown on mobile */
+  align-items: center; gap: 6px;
+  padding: 9px 14px;
+  border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 500; font-family: 'DM Sans',sans-serif;
+  background: var(--bg); color: var(--ink); cursor: pointer;
+  white-space: nowrap;
+}
+.filter-toggle-btn.has-active { border-color: var(--forest); color: var(--forest); }
+
+.filter-group { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.filter-drawer { display:contents; }
+
+select {
+  padding: 8px 10px;
+  border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  font-size: 13px; font-family:'DM Sans',sans-serif;
+  background: var(--bg); color: var(--ink); cursor: pointer; outline: none;
+  min-width: 0;
+}
+select:focus { border-color: var(--forest); }
+
+.toggle-btn {
+  display:flex; align-items:center; gap:5px;
+  padding: 8px 13px;
+  border: 1.5px solid var(--border); border-radius: var(--r-sm);
+  font-size: 13px; font-weight: 500; font-family:'DM Sans',sans-serif;
+  background: var(--bg); color: var(--ink); cursor: pointer;
+  transition: all .18s; white-space:nowrap;
+}
+.toggle-btn.active { background:var(--forest); color:#fff; border-color:var(--forest); }
+.toggle-btn:hover:not(.active) { background:var(--surface2); }
+
+.view-toggle { display:flex; border:1.5px solid var(--border); border-radius:var(--r-sm); overflow:hidden; }
+.view-btn {
+  padding: 8px 13px; font-size:13px; font-weight:500;
+  font-family:'DM Sans',sans-serif; border:none;
+  background:var(--bg); color:var(--ink-mid); cursor:pointer;
+  transition:all .18s; display:flex; align-items:center; gap:4px;
+}
+.view-btn.active { background:var(--forest); color:#fff; }
+
+.export-btn {
+  display:flex; align-items:center; gap:5px;
+  padding: 8px 12px;
+  border:1.5px solid var(--border); border-radius:var(--r-sm);
+  background:var(--bg); color:var(--ink-light);
+  font-size:12px; font-weight:500; cursor:pointer;
+  transition:all .18s; font-family:'DM Sans',sans-serif; white-space:nowrap;
+}
+.export-btn:hover { border-color:var(--amber); color:var(--amber); }
+
+.results-bar {
+  max-width:1400px; margin:0 auto;
+  padding: 6px 20px 8px;
+  font-size:12px; color:var(--ink-light);
+}
+
+/* ── AUTOCOMPLETE ── */
+.autocomplete-dropdown {
+  position:absolute; top:calc(100% + 4px); left:0; right:0;
+  background:var(--surface); border:1.5px solid var(--forest);
+  border-radius:var(--r-sm); box-shadow:var(--shadow-lg);
+  z-index:300; max-height:260px; overflow-y:auto; display:none;
+}
+.autocomplete-dropdown.open { display:block; }
+.ac-item {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 14px; cursor:pointer;
+  border-bottom:1px solid var(--border); transition:background .12s;
+}
+.ac-item:last-child { border-bottom:none; }
+.ac-item:hover,.ac-item.focused { background:var(--surface2); }
+.ac-thumb {
+  width:36px; height:36px; border-radius:6px;
+  object-fit:cover; flex-shrink:0; background:var(--surface2);
+  display:flex; align-items:center; justify-content:center; font-size:16px;
+}
+.ac-thumb img { width:36px; height:36px; border-radius:6px; object-fit:cover; }
+.ac-name { font-size:13px; font-weight:500; color:var(--ink); }
+.ac-sci { font-size:11px; color:var(--ink-light); font-style:italic; }
+.ac-empty { padding:12px 14px; font-size:13px; color:var(--ink-light); text-align:center; }
+
+/* ── CARDS ── */
+#cards-view {
+  max-width:1400px; margin:0 auto; padding:clamp(12px,3vw,24px);
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+  gap: clamp(12px,2vw,20px);
+}
+
+.plant-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden; cursor:pointer;
+  transition: transform .22s cubic-bezier(.22,1,.36,1), box-shadow .22s;
+  display:flex; flex-direction:column;
+  opacity:0; transform:translateY(12px);
+  animation: cardIn .38s cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes cardIn {
+  to { opacity:1; transform:translateY(0); }
+}
+.plant-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-lg); }
+
+.card-img-wrap { position:relative; height:190px; background:var(--surface2); flex-shrink:0; overflow:hidden; }
+.card-img-placeholder {
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  font-size:52px;
+  background: linear-gradient(135deg, var(--surface2), oklch(90% 0.025 120 / 0.35));
+  z-index:0;
+}
+.lazy-plant-img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:1; }
+.card-img-gradient {
+  position:absolute; bottom:0; left:0; right:0; height:70%; z-index:2;
+  background:linear-gradient(transparent, oklch(10% 0.03 65 / 0.82));
+  pointer-events:none;
+}
+.card-name-block {
+  position:absolute; bottom:10px; left:12px; right:12px; z-index:3;
+}
+.card-name {
+  font-family:'Cormorant Garamond',serif; font-weight:600;
+  font-size:clamp(16px,2vw,19px); color:#fff; line-height:1.25;
+  text-shadow:0 1px 4px oklch(0% 0 0 / .35);
+}
+.card-sci {
+  font-style:italic; font-size:11px; color:rgba(255,255,255,0.78);
+  display:block; margin-top:2px;
+  text-shadow:0 1px 3px oklch(0% 0 0 / .35);
+}
+.card-body { padding:11px 12px 12px; display:flex; flex-direction:column; gap:8px; flex:1; }
+.card-tags { display:flex; flex-wrap:wrap; gap:5px; }
+.tag {
+  font-size:11px; font-weight:500; padding:2px 9px;
+  border-radius:20px; white-space:nowrap;
+}
+.tag-green    { background:oklch(90% 0.06 148); color:var(--forest); }
+.tag-amber    { background:oklch(94% 0.06 72);  color:oklch(44% 0.14 72); }
+.tag-sky      { background:oklch(93% 0.05 215); color:oklch(38% 0.09 215); }
+.tag-muted    { background:var(--surface2); color:var(--ink-mid); }
+.tag-planted  { background:var(--forest); color:#fff; }
+.tag-planned  { background:oklch(95% 0.07 72); color:oklch(44% 0.14 72); }
+.tag-ordered  { background:oklch(93% 0.05 215); color:oklch(38% 0.09 215); }
+.tag-inground { background:oklch(90% 0.07 148); color:oklch(34% 0.11 148); }
+.tag-estab    { background:var(--forest); color:#fff; }
+.tag-deer     { background:oklch(95% 0.05 55); color:oklch(44% 0.12 55); }
+
+.card-bloom { font-size:12px; color:var(--ink-light); padding-top:8px; border-top:1px solid var(--border); margin-top:auto; }
+.deer-dots { display:flex; gap:3px; }
+.deer-dot { width:8px; height:8px; border-radius:50%; }
+
+/* ── CALENDAR ── */
+#calendar-view { max-width:1400px; margin:0 auto; padding:clamp(12px,3vw,24px); display:none; }
+.cal-title-row { display:flex; align-items:baseline; gap:12px; margin-bottom:20px; flex-wrap:wrap; }
+.cal-title { font-family:'Cormorant Garamond',serif; font-size:clamp(20px,3vw,28px); font-weight:600; color:var(--ink); }
+.cal-sub { font-size:13px; color:var(--ink-light); }
+
+.month-overview {
+  display:grid; grid-template-columns:repeat(12,1fr); gap:3px;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:var(--r); padding:14px 16px; margin-bottom:20px;
+}
+.mo-col {
+  text-align:center; cursor:pointer; border-radius:6px;
+  padding:5px 2px 3px; transition:background .14s;
+}
+.mo-col:hover,.mo-col.active { background:var(--surface2); }
+.mo-label { font-size:10px; font-weight:600; color:var(--ink-light); margin-bottom:3px; letter-spacing:.04em; }
+.mo-bar-wrap { height:44px; display:flex; flex-direction:column; justify-content:flex-end; }
+.mo-bar { border-radius:3px 3px 0 0; min-height:3px; }
+.mo-count { font-size:10px; color:var(--ink-light); margin-top:2px; }
+
+.timeline-scroll { overflow-x:auto; }
+.timeline-wrap { background:var(--surface); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; min-width:640px; }
+.timeline-header {
+  display:grid; grid-template-columns:200px repeat(12,1fr);
+  background:var(--surface2); border-bottom:2px solid var(--border);
+  position:sticky; top:60px; z-index:50;
+}
+.tl-plant-header { padding:9px 14px; font-size:11px; font-weight:600; color:var(--ink-light); border-right:1px solid var(--border); }
+.tl-month-header {
+  text-align:center; padding:9px 4px; font-size:11px; font-weight:600;
+  color:var(--ink-light); border-right:1px solid var(--border);
+  letter-spacing:.03em;
+}
+.tl-month-header:last-child { border-right:none; }
+.tl-month-header.cur { color:var(--forest); background:oklch(90% 0.06 148 / 0.4); }
+.tl-row {
+  display:grid; grid-template-columns:200px repeat(12,1fr);
+  border-bottom:1px solid var(--border); cursor:pointer;
+  transition:background .14s;
+}
+.tl-row:last-child { border-bottom:none; }
+.tl-row:hover { background:var(--surface2); }
+.tl-name-cell {
+  padding:10px 14px; display:flex; align-items:center; gap:10px;
+  border-right:1px solid var(--border);
+  position:sticky; left:0; background:var(--surface); z-index:2;
+  min-width:0;
+}
+.tl-row:hover .tl-name-cell { background:var(--surface2); }
+.tl-thumb {
+  width:34px; height:34px; border-radius:5px; flex-shrink:0;
+  background:var(--surface2); display:flex; align-items:center;
+  justify-content:center; font-size:15px; overflow:hidden;
+}
+.tl-thumb-img {
+  width:34px; height:34px; border-radius:5px; flex-shrink:0;
+  background-size:cover; background-position:center; background-color:var(--surface2);
+}
+.tl-name-text { min-width:0; }
+.tl-plant-name { font-family:'Cormorant Garamond',serif; font-size:14px; font-weight:600; color:var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tl-plant-sci { font-style:italic; font-size:11px; color:var(--ink-light); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.tl-month-cell { border-right:1px solid oklch(88% 0.018 80 / 0.6); min-height:52px; }
+.tl-month-cell:last-child { border-right:none; }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position:fixed; inset:0; background:oklch(12% 0.02 65 / 0.55);
+  z-index:500; display:none; align-items:center; justify-content:center;
+  padding:20px;
+  backdrop-filter:blur(3px);
+}
+.modal-overlay.open { display:flex; }
+
+.modal {
+  background:var(--surface); border-radius:var(--r);
+  width:100%; max-width:600px; max-height:90vh;
+  overflow:hidden; display:flex; flex-direction:column;
+  box-shadow:var(--shadow-lg);
+  transform:scale(0.97) translateY(8px);
+  animation:modalIn .25s cubic-bezier(.22,1,.36,1) forwards;
+}
+@keyframes modalIn { to { transform:scale(1) translateY(0); } }
+
+.modal-img { width:100%; height:220px; background:var(--surface2); flex-shrink:0; position:relative; }
+.modal-img img { width:100%; height:100%; object-fit:cover; }
+.modal-img-placeholder { width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-size:72px; }
+.modal-close-btn {
+  position:absolute; top:12px; right:12px;
+  width:36px; height:36px; border-radius:50%;
+  background:oklch(12% 0.02 65 / 0.55); border:none;
+  color:#fff; font-size:18px; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  backdrop-filter:blur(4px); z-index:1;
+  transition:background .15s;
+}
+.modal-close-btn:hover { background:oklch(12% 0.02 65 / 0.75); }
+
+.modal-body { overflow-y:auto; padding:22px 24px 28px; flex:1; }
+.modal-title { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; color:var(--ink); line-height:1.15; }
+.modal-sci { font-style:italic; font-size:15px; color:var(--ink-mid); margin-top:3px; }
+.modal-tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:12px; }
+
+.section { margin-top:20px; }
+.section-title { font-size:12px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-light); margin-bottom:8px; }
+.info-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+.info-item { background:var(--bg); border-radius:var(--r-sm); padding:10px 12px; }
+.info-label { font-size:11px; font-weight:600; color:var(--ink-light); letter-spacing:.04em; text-transform:uppercase; margin-bottom:2px; }
+.info-value { font-size:13px; color:var(--ink); line-height:1.4; }
+
+.modal-timeline { display:flex; gap:3px; margin-bottom:12px; }
+.mtl-cell {
+  flex:1; text-align:center; padding:6px 2px;
+  border-radius:5px; font-size:10px; font-weight:600;
+  transition:transform .15s;
+}
+.mtl-cell.bloom { color:#fff; }
+.mtl-cell.no-bloom { background:var(--surface2); color:var(--ink-light); }
+
+.deer-section { display:flex; flex-direction:column; gap:8px; }
+.deer-row { display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--bg); border-radius:var(--r-sm); }
+.deer-row-label { font-size:12px; font-weight:600; color:var(--ink-mid); min-width:60px; }
+.deer-resistance { font-size:13px; color:var(--ink); flex:1; }
+.resistance-bar { display:flex; gap:4px; align-items:center; }
+.res-pip { width:10px; height:10px; border-radius:50%; border:1.5px solid var(--border); }
+.res-pip.filled { border-color:transparent; }
+.res-high .res-pip.filled { background:var(--forest); }
+.res-medium .res-pip.filled { background:var(--amber); }
+.res-low .res-pip.filled { background:var(--rust); }
+
+.notes-box { background:var(--bg); border-radius:var(--r-sm); padding:12px; font-size:13px; color:var(--ink-mid); line-height:1.6; }
+
+/* ── GARDEN TRACKER ── */
+.track-btn {
+  padding:9px 16px; border:1.5px dashed var(--forest); border-radius:var(--r-sm);
+  background:transparent; color:var(--forest); font-size:13px; font-weight:500;
+  cursor:pointer; font-family:'DM Sans',sans-serif; transition:all .18s;
+}
+.track-btn:hover { background:oklch(90% 0.06 148 / 0.3); }
+.status-pills { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:10px; }
+.status-pill {
+  padding:6px 14px; border-radius:20px; border:1.5px solid transparent;
+  font-size:12px; font-weight:500; cursor:pointer; font-family:'DM Sans',sans-serif;
+  transition:all .15s; background:var(--bg);
+}
+.status-pill.s-planned { border-color:oklch(70% 0.14 72); color:oklch(44% 0.14 72); }
+.status-pill.s-planned.active { background:oklch(70% 0.14 72); color:#fff; }
+.status-pill.s-ordered { border-color:var(--sky); color:oklch(38% 0.09 215); }
+.status-pill.s-ordered.active { background:var(--sky); color:#fff; }
+.status-pill.s-inground { border-color:var(--forest-mid); color:var(--forest); }
+.status-pill.s-inground.active { background:var(--forest-mid); color:#fff; }
+.status-pill.s-estab { border-color:var(--forest); color:var(--forest); }
+.status-pill.s-estab.active { background:var(--forest); color:#fff; }
+.track-fields { display:flex; gap:8px; flex-wrap:wrap; }
+.track-input {
+  padding:8px 10px; border:1.5px solid var(--border); border-radius:var(--r-sm);
+  font-size:13px; font-family:'DM Sans',sans-serif;
+  background:var(--bg); color:var(--ink); outline:none; flex:1; min-width:130px;
+}
+.track-input:focus { border-color:var(--forest); }
+.track-footer { display:flex; justify-content:space-between; align-items:center; margin-top:8px; }
+.track-updated { font-size:11px; color:var(--ink-light); }
+.untrack-btn {
+  font-size:12px; color:var(--rust); background:none; border:none;
+  cursor:pointer; font-family:'DM Sans',sans-serif; padding:4px 0;
+}
+.notes-log { display:flex; flex-direction:column; gap:8px; margin-bottom:10px; }
+.note-entry { background:var(--bg); border-radius:var(--r-sm); padding:10px 12px; }
+.note-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:4px; }
+.note-date { font-size:11px; color:var(--ink-light); }
+.note-del { background:none; border:none; color:var(--ink-light); cursor:pointer; font-size:16px; padding:0; line-height:1; }
+.note-text { font-size:13px; color:var(--ink); line-height:1.5; }
+.note-add-row { display:flex; gap:8px; }
+.note-textarea {
+  flex:1; padding:9px 12px; border:1.5px solid var(--border); border-radius:var(--r-sm);
+  font-size:13px; font-family:'DM Sans',sans-serif;
+  background:var(--bg); color:var(--ink); resize:none; outline:none;
+}
+.note-textarea:focus { border-color:var(--forest); }
+.note-add-btn {
+  padding:9px 14px; background:var(--forest); color:#fff;
+  border:none; border-radius:var(--r-sm); font-size:13px;
+  font-family:'DM Sans',sans-serif; cursor:pointer; font-weight:500;
+  white-space:nowrap; align-self:flex-end;
+}
+
+/* ── MOBILE ── */
+@media(max-width:640px) {
+  .filter-toggle-btn { display:flex; }
+  .filter-drawer { display:none; flex-direction:column; gap:8px; width:100%; padding:10px 20px; border-top:1px solid var(--border); }
+  .filter-drawer.open { display:flex; }
+  .filter-group { flex-wrap:wrap; }
+  .view-toggle,.export-btn { display:none; }
+  #cards-view { grid-template-columns:1fr; }
+  .modal-overlay { padding:0; align-items:flex-end; }
+  .modal {
+    max-height:92vh; border-radius:var(--r) var(--r) 0 0;
+    animation:modalUp .3s cubic-bezier(.22,1,.36,1) forwards;
+  }
+  @keyframes modalUp { from { transform:translateY(40px); opacity:.6; } to { transform:translateY(0); opacity:1; } }
+  .info-grid { grid-template-columns:1fr; }
+  .timeline-wrap { min-width:520px; }
+}
+@media(max-width:480px) {
+  .controls-main { flex-wrap:nowrap; }
+  .search-wrap { min-width:0; }
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-leaves"></div>
+  <h1>Port Angeles Plant Guide</h1>
+  <p>Our garden &amp; local bee forage — bloom seasons, pollinators &amp; deer resistance</p>
+  <div class="header-badges">
+    <span class="badge" id="plant-count-badge">— Plants</span>
+    <span class="badge">Port Angeles, WA · PNW</span>
+    <span class="badge">Updated April 2026</span>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="controls-main">
+    <div class="search-wrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="search" type="text" placeholder="Search plants…" autocomplete="off" aria-label="Search plants">
+      <div class="autocomplete-dropdown" id="ac-dropdown"></div>
+    </div>
+    <button class="filter-toggle-btn" id="filter-toggle-btn" onclick="toggleFilterDrawer()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 3H2l8 9.46V19l4 2v-8.54L22 3z"/></svg>
+      Filters
+    </button>
+    <div class="filter-drawer" id="filter-drawer">
+      <div class="filter-group">
+        <select id="month-filter" aria-label="Filter by bloom month">
+          <option value="">All bloom months</option>
+          <option value="1">January</option><option value="2">February</option>
+          <option value="3">March</option><option value="4">April</option>
+          <option value="5">May</option><option value="6">June</option>
+          <option value="7">July</option><option value="8">August</option>
+          <option value="9">September</option><option value="10">October</option>
+          <option value="11">November</option><option value="12">December</option>
+        </select>
+        <button class="toggle-btn" id="poll-btn" onclick="toggleFilter('pollinator')">🐝 Pollinators</button>
+        <button class="toggle-btn" id="planted-btn" onclick="toggleFilter('planted')">✓ Our Yard</button>
+        <button class="toggle-btn" id="deer-btn" onclick="toggleFilter('deerResistant')">🦌 Deer-Resistant</button>
+        <button class="toggle-btn" id="garden-btn" onclick="toggleFilter('myGarden')">🌱 Tracked</button>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;margin-left:auto;">
+      <div class="view-toggle">
+        <button class="view-btn active" id="view-cards" onclick="setView('cards')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Cards
+        </button>
+        <button class="view-btn" id="view-cal" onclick="setView('calendar')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          Calendar
+        </button>
+      </div>
+      <button class="export-btn" onclick="exportGardenData()" title="Export garden tracker data">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export
+      </button>
+    </div>
+  </div>
+  <div class="results-bar" id="results-bar"></div>
+</div>
+
+<div id="cards-view"></div>
+<div id="calendar-view">
+  <div class="cal-title-row">
+    <span class="cal-title">Bloom Calendar</span>
+    <span class="cal-sub">When each plant blooms through the year</span>
+  </div>
+  <div class="month-overview" id="month-summary"></div>
+  <div class="timeline-scroll">
+    <div class="timeline-wrap">
+      <div class="timeline-header">
+        <div class="tl-plant-header">Plant</div>
+        <div class="tl-month-header" id="th-1">Jan</div>
+        <div class="tl-month-header" id="th-2">Feb</div>
+        <div class="tl-month-header" id="th-3">Mar</div>
+        <div class="tl-month-header" id="th-4">Apr</div>
+        <div class="tl-month-header" id="th-5">May</div>
+        <div class="tl-month-header" id="th-6">Jun</div>
+        <div class="tl-month-header" id="th-7">Jul</div>
+        <div class="tl-month-header" id="th-8">Aug</div>
+        <div class="tl-month-header" id="th-9">Sep</div>
+        <div class="tl-month-header" id="th-10">Oct</div>
+        <div class="tl-month-header" id="th-11">Nov</div>
+        <div class="tl-month-header" id="th-12">Dec</div>
+      </div>
+      <div id="timeline-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-img" id="modal-img">
+      <button class="modal-close-btn" onclick="closeModalDirect()" aria-label="Close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ── SEASON COLORS ──
+const MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+// Warm naturalist seasonal palette
+const MONTH_COLORS = [
+  'oklch(72% 0.08 215)',  // Jan  – cool winter blue
+  'oklch(74% 0.07 200)',  // Feb  – pale ice
+  'oklch(68% 0.10 140)',  // Mar  – early spring green
+  'oklch(65% 0.13 138)',  // Apr  – fresh green
+  'oklch(60% 0.14 140)',  // May  – full spring green
+  'oklch(70% 0.14 75)',   // Jun  – early summer gold
+  'oklch(74% 0.16 68)',   // Jul  – warm amber
+  'oklch(72% 0.15 60)',   // Aug  – deep amber
+  'oklch(62% 0.15 45)',   // Sep  – early autumn rust
+  'oklch(56% 0.14 38)',   // Oct  – harvest rust
+  'oklch(62% 0.09 60)',   // Nov  – muted amber
+  'oklch(68% 0.07 210)',  // Dec  – cool blue-grey
+];
+
+// ── PLANT DATA ──
+const PLANTS = [
+  // ── FROM OUR YARD (planted:'Y') ──
+  {name:'Ceanothus Victoria',sci:'Ceanothus impressus',months:[3,4,5,6],bloom_season:'Spring',peak_bloom:'April–May',pollinator:'Yes – bees, hummingbirds',planted:'Y',evergreen:'Evergreen',deer:'High – rarely browsed',rabbit:'High',water:'Low',sun:'Full Sun to Part Shade',size:'8–10 ft',growth:'Moderate',zone:'7–9',origin:'Native California',notes:'Clusters of intense blue flowers. Tolerates drought once established. Great hedge plant.'},
+  {name:'Ceanothus Beekeeper',sci:'Ceanothus hybrid',months:[4,5,6],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – bees',planted:'Y',evergreen:'Semi-Evergreen',deer:'High – rarely browsed',rabbit:'High',water:'Low',sun:'Full Sun to Part Shade',size:'2–3 ft',growth:'Moderate',zone:'7–10',origin:'Native California',notes:'Mounding deciduous shrub. Blue flowers. Great for low borders.'},
+  {name:'Marina Strawberry Tree',sci:'Arbutus unedo',months:[10,11,12,1,2],bloom_season:'Fall–Winter',peak_bloom:'November',pollinator:'Yes – bees, especially winter bees',planted:'Y',evergreen:'Evergreen',deer:'High – rarely browsed',rabbit:'High',water:'Low',sun:'Full Sun',size:'8–20 ft',growth:'Moderate',zone:'7–10',origin:'Mediterranean / Ireland',edible:'Red fruit edible when fully ripe, mealy texture',notes:'Unique winter bloomer — flowers and fruit appear simultaneously. One of the few trees blooming for winter bees.'},
+  {name:'Meadow Sage',sci:'Salvia nemorosa',months:[5,6,7,8],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – bees, butterflies, hummingbirds',planted:'Y',evergreen:'Deciduous',deer:'High – strongly aromatic foliage',rabbit:'High',water:'Low',sun:'Full Sun',size:'18–24 in',growth:'Moderate',zone:'4–9',origin:'Europe / Central Asia',notes:'Long-blooming spikes of violet-blue. Deadhead for repeat bloom. Extremely drought tolerant once established.'},
+  {name:'Coral Bells',sci:'Heuchera',months:[5,6,7],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – hummingbirds, bees',planted:'Y',evergreen:'Semi-Evergreen',deer:'High – generally avoided',rabbit:'Moderate',water:'Moderate',sun:'Part Shade to Part Sun',size:'12–18 in',growth:'Moderate',zone:'4–9',origin:'Native N. America',notes:'Grown mainly for striking foliage (burgundy, bronze, lime). Delicate airy flower spikes.'},
+  {name:'Columbine',sci:'Aquilegia',months:[4,5,6],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – hummingbirds, bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Moderate',sun:'Part Sun to Part Shade',size:'2–3 ft',growth:'Moderate',zone:'3–9',origin:'Native N. America / Europe',toxicity:'Mildly toxic if ingested in quantity',notes:'Graceful nodding spurred flowers. Self-seeds freely — let a few go to seed for a naturalized colony.'},
+  {name:'Hardy Geranium',sci:'Geranium',months:[5,6,7,8],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – bees, hoverflies, butterflies',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Moderate',sun:'Full Sun to Part Shade',size:'12–24 in',growth:'Moderate',zone:'4–8',origin:'Europe / Asia'},
+  {name:'Tickseed',sci:'Coreopsis',months:[6,7,8,9],bloom_season:'Summer – Fall',peak_bloom:'July',pollinator:'Yes – bees, butterflies, goldfinches',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'High',water:'Low',sun:'Full Sun',size:'1–2 ft',growth:'Fast',zone:'4–9',origin:'Native N. America',notes:'Long bloom season. Cut back by half after first flush for repeat bloom through fall.'},
+  {name:'Garden Phlox',sci:'Phlox paniculata',months:[6,7,8,9],bloom_season:'Summer',peak_bloom:'July – August',pollinator:'Yes – butterflies, moths, hummingbirds',planted:'Y',evergreen:'Deciduous',deer:'Low – frequently browsed',rabbit:'Low',water:'Moderate',sun:'Full Sun to Part Sun',size:'3–4 ft',growth:'Moderate',zone:'4–8',origin:'Native E. N. America',notes:'Beloved by deer. Consider planting behind a barrier or near strongly-scented plants.'},
+  {name:'Black-Eyed Susan',sci:'Rudbeckia hirta',months:[7,8,9,10],bloom_season:'Summer – Fall',peak_bloom:'August',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'Moderate – sometimes sampled',rabbit:'Moderate',water:'Low to Moderate',sun:'Full Sun',size:'2–3 ft',growth:'Fast',zone:'3–9',origin:'Native N. America'},
+  {name:'Bellflower',sci:'Campanula',months:[6,7,8],bloom_season:'Summer',peak_bloom:'July',pollinator:'Yes – bees',planted:'Y',evergreen:'Deciduous',deer:'Low – frequently browsed',rabbit:'Low',water:'Moderate',sun:'Full Sun to Part Shade',size:'1–3 ft',growth:'Moderate',zone:'3–8',origin:'Europe / Asia',notes:'Keep deer pressure in mind when siting — bellflowers are tender and favored by browsers.'},
+  {name:'Stonecrop',sci:'Sedum',months:[8,9,10],bloom_season:'Late Summer – Fall',peak_bloom:'September',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Semi-Evergreen',deer:'High – succulent texture avoided',rabbit:'High',water:'Low',sun:'Full Sun',size:'6 in – 2 ft',growth:'Slow to Moderate',zone:'3–9',origin:'N. America / Europe / Asia',notes:'Dried seed heads provide winter structure and feed birds. Excellent late-season pollinator plant.'},
+  {name:'Coneflower',sci:'Echinacea purpurea',months:[6,7,8,9],bloom_season:'Summer – Fall',peak_bloom:'July – August',pollinator:'Yes – bees, butterflies, goldfinches',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Low',sun:'Full Sun',size:'2–4 ft',growth:'Moderate',zone:'3–8',origin:'Native N. America',notes:'Leave seedheads standing — goldfinches and chickadees feed on them through winter.'},
+  {name:'Salvia',sci:'Salvia officinalis',months:[5,6,7],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – bees, butterflies, hummingbirds',planted:'Y',evergreen:'Semi-Evergreen',deer:'High – aromatic, strongly avoided',rabbit:'High',water:'Low',sun:'Full Sun',size:'2–3 ft',growth:'Moderate',zone:'5–8',origin:'Mediterranean',edible:'Classic culinary herb'},
+  {name:'Speedwell',sci:'Veronica spicata',months:[5,6,7,8],bloom_season:'Late Spring – Summer',peak_bloom:'June – July',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Moderate',sun:'Full Sun',size:'1–2 ft',growth:'Moderate',zone:'3–8',origin:'Europe'},
+  {name:'Delphinium',sci:'Delphinium elatum',months:[6,7,8],bloom_season:'Summer',peak_bloom:'June – July',pollinator:'Yes – hummingbirds, bumblebees',planted:'Y',evergreen:'Deciduous',deer:'High – toxic to deer, strongly avoided',rabbit:'High',water:'Regular',sun:'Full Sun',size:'3–6 ft',growth:'Fast',zone:'3–7',origin:'Europe / Asia',toxicity:'All parts toxic to humans, horses and livestock',notes:'Tall architectural spikes. Stake in windy areas. Cut to ground after first bloom for possible second flush.'},
+  {name:'Clematis',sci:'Clematis',months:[5,6,7,8,9],bloom_season:'Spring – Summer',peak_bloom:'June – July',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Moderate to Regular',sun:'Full Sun (roots in shade)',size:'8–20 ft vine',growth:'Moderate to Fast',zone:'4–9',origin:'Europe / Asia',notes:'"Feet in shade, head in sun" — mulch the base well. Prune timing depends on group (1, 2 or 3).'},
+  {name:'Weigela',sci:'Weigela florida',months:[5,6,7],bloom_season:'Late Spring – Early Summer',peak_bloom:'May – June',pollinator:'Yes – hummingbirds, bees',planted:'Y',evergreen:'Deciduous',deer:'Moderate – sometimes browsed',rabbit:'Moderate',water:'Moderate',sun:'Full Sun to Part Sun',size:'4–6 ft',growth:'Moderate',zone:'4–8',origin:'Asia'},
+  {name:'Hydrangea',sci:'Hydrangea',months:[6,7,8,9],bloom_season:'Summer – Fall',peak_bloom:'July – August',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'Low – frequently browsed',rabbit:'Low',water:'Regular',sun:'Part Sun to Part Shade',size:'3–8 ft',growth:'Moderate',zone:'3–9',origin:'Asia / N. America'},
+  {name:'Spirea',sci:'Spiraea',months:[4,5,6,7],bloom_season:'Spring – Early Summer',peak_bloom:'May – June',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Moderate',sun:'Full Sun',size:'2–6 ft',growth:'Moderate to Fast',zone:'3–9',origin:'Asia / N. America'},
+  {name:'Forsythia',sci:'Forsythia',months:[3,4],bloom_season:'Early Spring',peak_bloom:'March – April',pollinator:'Yes – early bees',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Moderate',sun:'Full Sun to Part Sun',size:'5–10 ft',growth:'Fast',zone:'5–9',origin:'Asia / Europe',notes:'One of the first shrubs to bloom. Flowers before leaves — a bright yellow beacon for early bees.'},
+  {name:'Viburnum',sci:'Viburnum',months:[4,5,6],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'High – generally avoided',rabbit:'Moderate',water:'Moderate',sun:'Full Sun to Part Shade',size:'4–12 ft',growth:'Moderate',zone:'2–9',origin:'N. America / Europe / Asia'},
+  {name:'Dogwood',sci:'Cornus',months:[4,5,6],bloom_season:'Spring',peak_bloom:'April – May',pollinator:'Yes – bees, small insects',planted:'Y',evergreen:'Deciduous',deer:'Low – frequently browsed',rabbit:'Low',water:'Moderate to Regular',sun:'Full Sun to Part Shade',size:'5–25 ft',growth:'Moderate',zone:'2–9',origin:'Native N. America / Europe / Asia'},
+  {name:'Lilac',sci:'Syringa vulgaris',months:[4,5,6],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – bees, butterflies, moths',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Moderate',sun:'Full Sun',size:'8–15 ft',growth:'Slow',zone:'3–7',origin:'Europe / Asia',notes:'One of the most fragrant spring shrubs. Needs cold winters to bloom well — perfect for Port Angeles.'},
+  {name:'Elderberry',sci:'Sambucus nigra',months:[5,6,7],bloom_season:'Late Spring – Early Summer',peak_bloom:'June',pollinator:'Yes – bees, butterflies, hoverflies',planted:'Y',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Moderate',sun:'Full Sun to Part Shade',size:'8–12 ft',growth:'Fast',zone:'3–7',origin:'Native N. America / Europe',edible:'Flowers and fully ripe berries edible (elderflower cordial, elderberry syrup)',toxicity:'Leaves and unripe berries toxic'},
+  {name:'Holly',sci:'Ilex',months:[4,5],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – bees',planted:'Y',evergreen:'Evergreen',deer:'High – prickly leaves strongly deter browsing',rabbit:'High',water:'Moderate',sun:'Full Sun to Part Shade',size:'6–15 ft',growth:'Slow',zone:'5–9',origin:'N. America / Europe / Asia',toxicity:'Berries toxic to humans and pets',notes:'Separate male and female plants needed for berries. Provides winter color and bird habitat.'},
+  {name:'English Lavender',sci:"Lavandula angustifolia 'Munstead'",months:[6,7,8],bloom_season:'Summer',peak_bloom:'June – July',pollinator:'Yes – bees, butterflies, beneficial insects',planted:'Y',evergreen:'Evergreen',deer:'High – strongly aromatic, deer rarely touch',rabbit:'High',water:'Low',sun:'Full Sun',size:'18–24 in',growth:'Slow to Moderate',zone:'5–9',origin:'Mediterranean',edible:'Culinary; flowers edible and fragrant',notes:"Munstead is a compact, cold-hardy English lavender. Excellent for low hedging and cutting."},
+  {name:'Rhododendron',sci:"Rhododendron 'English Roseum'",months:[4,5,6],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – bees',planted:'Y',evergreen:'Evergreen',deer:'High – toxic, deer strongly avoid',rabbit:'High',water:'Regular',sun:'Part Sun to Part Shade',size:'6–8 ft',growth:'Slow',zone:'4–8',origin:'Asia / N. America',toxicity:'All parts toxic to humans, pets and livestock'},
+  {name:'Japanese Anemone',sci:'Anemone hybrida',months:[8,9,10],bloom_season:'Late Summer – Fall',peak_bloom:'September',pollinator:'Yes – bees',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Moderate to Regular',sun:'Part Sun to Part Shade',size:'3–5 ft',growth:'Moderate',zone:'4–8',origin:'China',notes:'Late-season treasure when most perennials are done. Spreads gradually to form graceful colonies.'},
+  {name:'Alpine Plumbago',sci:'Ceratostigma plumbaginoides',months:[8,9,10],bloom_season:'Late Summer – Fall',peak_bloom:'September',pollinator:'Yes – bees, butterflies',planted:'Y',evergreen:'Deciduous',deer:'High – avoided',rabbit:'High',water:'Low to Moderate',sun:'Full Sun to Part Shade',size:'6–12 in',growth:'Moderate',zone:'5–9',origin:'China',notes:'Brilliant cobalt-blue flowers in fall. Leaves turn rich red in autumn. Outstanding ground cover.'},
+  {name:'Dwarf Amber Spruce',sci:'Picea orientalis',months:[],bloom_season:'—',peak_bloom:'—',pollinator:'No',planted:'Y',evergreen:'Evergreen',deer:'High – avoided',rabbit:'High',water:'Low to Moderate',sun:'Full Sun',size:'4–6 ft',growth:'Slow',zone:'4–7',origin:'Caucasus / Turkey',notes:'Ornamental conifer with golden new growth in spring. Architectural year-round interest.'},
+  {name:'Siskiyou Hazelnut',sci:'Corylus cornuta',months:[1,2,3],bloom_season:'Late Winter – Early Spring',peak_bloom:'February',pollinator:'Yes – wind-pollinated; early bees',planted:'Y',evergreen:'Deciduous',deer:'Moderate – sometimes browsed',rabbit:'Moderate',water:'Low to Moderate',sun:'Full Sun to Part Shade',size:'6–12 ft',growth:'Moderate',zone:'4–9',origin:'Native PNW',edible:'Nuts edible; important wildlife and forager food'},
+  {name:'Rose Glow Barberry',sci:"Berberis thunbergii 'Rose Glow'",months:[4,5],bloom_season:'Spring',peak_bloom:'April – May',pollinator:'Yes – bees',planted:'Y',evergreen:'Deciduous',deer:'High – thorny stems strongly deter',rabbit:'High',water:'Low',sun:'Full Sun',size:'4–5 ft',growth:'Moderate',zone:'4–8',origin:'Japan',notes:'Striking pink and purple mottled foliage. Thorns make it an effective barrier plant.'},
+  {name:'Persimmon',sci:"Diospyros kaki 'Futsu Bensemon'",months:[5,6],bloom_season:'Late Spring',peak_bloom:'May – June',pollinator:'Yes – bees',planted:'Y',evergreen:'Deciduous',deer:'Moderate',rabbit:'Low',water:'Moderate',sun:'Full Sun',size:'15–20 ft',growth:'Moderate',zone:'7–10',origin:'China / Japan',edible:'Sweet orange fruit; harvest October – November after first frost',notes:'Futsu Bensemon is an astringent type — sweeter after frost. Beautiful fall foliage.'},
+
+  // ── NASA BEE FORAGE (flight range, not necessarily in our yard) ──
+  {name:'Alder',sci:'Alnus',months:[1,2,3,4,5,6],bloom_season:'Late Winter – Summer',peak_bloom:'March',pollinator:'Yes – wind; early bees collect pollen',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Moderate to Wet',sun:'Full Sun to Part Shade',size:'30–80 ft',growth:'Fast',zone:'3–7',origin:'Native PNW',family:'Betulaceae'},
+  {name:'Manzanita',sci:'Arctostaphylos',months:[2,3,4,5],bloom_season:'Late Winter – Spring',peak_bloom:'March',pollinator:'Yes – bees, hummingbirds',planted:'',evergreen:'Evergreen',deer:'High',rabbit:'High',water:'Low',sun:'Full Sun',size:'2–15 ft',growth:'Slow to Moderate',zone:'6–9',origin:'Native W. N. America',family:'Ericaceae'},
+  {name:'Willow',sci:'Salix',months:[2,3,4,5,6,7,8],bloom_season:'Late Winter – Summer',peak_bloom:'March – April',pollinator:'Yes – critical early pollen for bees',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Wet to Moist',sun:'Full Sun',size:'6–70 ft',growth:'Fast',zone:'2–9',origin:'Native PNW',family:'Salicaceae'},
+  {name:'Dandelion',sci:'Taraxacum officinale',months:[3,4,5,6,7,8,9],bloom_season:'Spring – Fall',peak_bloom:'April – May',pollinator:'Yes – critical early pollen for bees',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Adaptable',sun:'Full Sun to Part Shade',size:'6–12 in',growth:'Fast',zone:'3–9',origin:'Europe (naturalized)',edible:'All parts edible — leaves, flowers, roots',family:'Asteraceae'},
+  {name:'Maple',sci:'Acer',months:[3,4,5],bloom_season:'Spring',peak_bloom:'March – April',pollinator:'Yes – bees collect pollen and nectar',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Low',water:'Moderate',sun:'Full Sun to Part Shade',size:'15–80 ft',growth:'Moderate',zone:'3–8',origin:'Native PNW / Asia',family:'Aceraceae'},
+  {name:'Cottonwood',sci:'Populus',months:[3,4,5,6],bloom_season:'Spring',peak_bloom:'March – April',pollinator:'Yes – wind; bees collect resin and pollen',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Low',water:'Moist to Wet',sun:'Full Sun',size:'60–100 ft',growth:'Very Fast',zone:'2–9',origin:'Native PNW',family:'Salicaceae'},
+  {name:'Pear',sci:'Pyrus',months:[4,5],bloom_season:'Spring',peak_bloom:'April',pollinator:'Yes – bees',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Low',water:'Moderate',sun:'Full Sun',size:'15–30 ft',growth:'Moderate',zone:'4–9',origin:'Europe / Asia',edible:'Fruit edible',family:'Rosaceae'},
+  {name:'Balsamroot',sci:'Balsamorhiza sagittata',months:[4,5,6,7],bloom_season:'Spring – Summer',peak_bloom:'May',pollinator:'Yes – bees, butterflies',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Low',sun:'Full Sun',size:'2–3 ft',growth:'Slow',zone:'3–8',origin:'Native PNW',family:'Asteraceae',edible:'Seeds edible; roots used medicinally'},
+  {name:'White Clover',sci:'Trifolium repens',months:[4,5,6,7,8,9],bloom_season:'Spring – Fall',peak_bloom:'June – July',pollinator:'Yes – honey bees, bumble bees',planted:'',evergreen:'Deciduous',deer:'Low – eagerly browsed',rabbit:'Low',water:'Moderate',sun:'Full Sun',size:'4–8 in',growth:'Fast',zone:'3–9',origin:'Europe (naturalized)',edible:'Flowers edible',family:'Fabaceae'},
+  {name:'Cascara',sci:'Rhamnus purshiana',months:[4,5,6],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – bees',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Moderate',sun:'Full Sun to Part Shade',size:'15–30 ft',growth:'Moderate',zone:'6–9',origin:'Native PNW',family:'Rhamnaceae'},
+  {name:'Blackberry',sci:'Rubus armeniacus',months:[4,5,6,7],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – bees',planted:'',evergreen:'Semi-Evergreen',deer:'Moderate – thorns help',rabbit:'Moderate',water:'Low to Moderate',sun:'Full Sun',size:'5–10 ft',growth:'Fast',zone:'6–9',origin:'Europe (invasive)',edible:'Berries edible',family:'Rosaceae'},
+  {name:'Raspberry',sci:'Rubus idaeus',months:[4,5,6,7],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – bees',planted:'',evergreen:'Deciduous',deer:'Moderate – thorns help',rabbit:'Moderate',water:'Moderate',sun:'Full Sun',size:'3–6 ft',growth:'Fast',zone:'3–9',origin:'Europe / N. America',edible:'Berries edible',family:'Rosaceae'},
+  {name:'Blueberry',sci:'Vaccinium',months:[4,5,6],bloom_season:'Spring',peak_bloom:'April – May',pollinator:'Yes – bumblebees essential for best fruit set',planted:'',evergreen:'Deciduous',deer:'Low – frequently browsed',rabbit:'Low',water:'Regular (acidic)',sun:'Full Sun',size:'2–8 ft',growth:'Slow to Moderate',zone:'4–7',origin:'Native PNW / N. America',edible:'Berries edible',family:'Ericaceae'},
+  {name:'Oregon Grape',sci:'Mahonia aquifolium',months:[4,5],bloom_season:'Spring',peak_bloom:'April',pollinator:'Yes – bees, especially early queens',planted:'',evergreen:'Evergreen',deer:'High – prickly holly-like leaves',rabbit:'High',water:'Low',sun:'Part Shade to Full Shade',size:'3–6 ft',growth:'Slow',zone:'5–9',origin:'Native PNW',edible:'Berries edible but tart; popular for jelly',family:'Berberidaceae'},
+  {name:'Apple',sci:'Malus domestica',months:[4,5,6],bloom_season:'Spring',peak_bloom:'May',pollinator:'Yes – bees essential for fruit set',planted:'',evergreen:'Deciduous',deer:'Low – browsed',rabbit:'Low',water:'Moderate',sun:'Full Sun',size:'8–30 ft',growth:'Moderate',zone:'3–8',origin:'Central Asia',edible:'Fruit edible',family:'Rosaceae'},
+  {name:'Wild Cherry',sci:'Prunus avium',months:[4,5,6],bloom_season:'Spring',peak_bloom:'April – May',pollinator:'Yes – bees',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Low',water:'Moderate',sun:'Full Sun',size:'30–60 ft',growth:'Fast',zone:'3–8',origin:'Europe (naturalized)',edible:'Fruit edible though small',family:'Rosaceae'},
+  {name:'Honeysuckle',sci:'Lonicera',months:[4,5,6],bloom_season:'Late Spring – Early Summer',peak_bloom:'May',pollinator:'Yes – hummingbirds, bees, butterflies',planted:'',evergreen:'Semi-Evergreen',deer:'Low – browsed',rabbit:'Low',water:'Moderate',sun:'Full Sun to Part Shade',size:'6–15 ft',growth:'Fast',zone:'4–9',origin:'N. America / Asia',family:'Caprifoliaceae'},
+  {name:'Sweet Clover',sci:'Melilotus officinalis',months:[5,6,7,8,9,10],bloom_season:'Late Spring – Fall',peak_bloom:'June – August',pollinator:'Yes – honey bees (one of best nectar plants)',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Low',sun:'Full Sun',size:'2–5 ft',growth:'Fast',zone:'3–9',origin:'Europe (naturalized)',family:'Fabaceae'},
+  {name:'Snowberry',sci:'Symphoricarpos albus',months:[5,6,7,8],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – bees, hummingbirds',planted:'',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Low',sun:'Full Sun to Part Shade',size:'3–6 ft',growth:'Moderate',zone:'3–7',origin:'Native PNW',family:'Caprifoliaceae'},
+  {name:'Alsike Clover',sci:'Trifolium hybridum',months:[5,6,7,8,9],bloom_season:'Late Spring – Fall',peak_bloom:'June – July',pollinator:'Yes – honey bees, bumble bees',planted:'',evergreen:'Deciduous',deer:'Low',rabbit:'Low',water:'Moderate',sun:'Full Sun',size:'12–20 in',growth:'Fast',zone:'3–8',origin:'Europe (naturalized)',family:'Fabaceae'},
+  {name:'Red Clover',sci:'Trifolium pratense',months:[5,6,7,8],bloom_season:'Late Spring – Summer',peak_bloom:'June – July',pollinator:'Yes – primarily long-tongued bumblebees',planted:'',evergreen:'Deciduous',deer:'Low',rabbit:'Low',water:'Moderate',sun:'Full Sun',size:'12–24 in',growth:'Moderate',zone:'3–9',origin:'Europe (naturalized)',family:'Fabaceae'},
+  {name:'Vetch',sci:'Vicia',months:[5,6,7,8],bloom_season:'Late Spring – Summer',peak_bloom:'June',pollinator:'Yes – bees',planted:'',evergreen:'Deciduous',deer:'Low',rabbit:'Low',water:'Low to Moderate',sun:'Full Sun',size:'1–3 ft vine',growth:'Fast',zone:'3–9',origin:'Europe (naturalized)',family:'Fabaceae'},
+  {name:'Hawthorn',sci:'Crataegus',months:[5,6],bloom_season:'Late Spring',peak_bloom:'May',pollinator:'Yes – bees',planted:'',evergreen:'Deciduous',deer:'High – thorns deter',rabbit:'High',water:'Low to Moderate',sun:'Full Sun',size:'15–25 ft',growth:'Slow',zone:'4–8',origin:'Europe / N. America',family:'Rosaceae'},
+  {name:'Black Locust',sci:'Robinia pseudoacacia',months:[5,6,7],bloom_season:'Late Spring – Early Summer',peak_bloom:'June',pollinator:'Yes – honey bees (top nectar plant)',planted:'',evergreen:'Deciduous',deer:'High – avoided',rabbit:'Moderate',water:'Low',sun:'Full Sun',size:'30–50 ft',growth:'Fast',zone:'3–8',origin:'Native E. N. America',edible:'Flowers edible and fragrant',family:'Fabaceae'},
+  {name:'Wild Carrot',sci:'Daucus carota',months:[6,7,8],bloom_season:'Summer',peak_bloom:'July',pollinator:'Yes – wide variety of bees and wasps',planted:'',evergreen:'Deciduous',deer:'Low',rabbit:'Low',water:'Low',sun:'Full Sun',size:'2–4 ft',growth:'Fast',zone:'3–9',origin:'Europe (naturalized)',edible:'Root of wild plant edible (ancestor of cultivated carrot)',family:'Apiaceae'},
+  {name:'Knapweed',sci:'Centaurea',months:[6,7,8,9,10],bloom_season:'Summer – Fall',peak_bloom:'July – August',pollinator:'Yes – bees, butterflies',planted:'',evergreen:'Deciduous',deer:'Low',rabbit:'Low',water:'Low',sun:'Full Sun',size:'1–4 ft',growth:'Fast',zone:'3–9',origin:'Europe (can be invasive)',family:'Asteraceae'},
+  {name:'Fireweed',sci:'Epilobium angustifolium',months:[6,7,8],bloom_season:'Summer',peak_bloom:'July',pollinator:'Yes – bees, hummingbirds',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Low to Moderate',sun:'Full Sun',size:'3–6 ft',growth:'Fast',zone:'2–7',origin:'Native PNW',family:'Onagraceae',notes:'First colonizer after disturbance. One of the most beautiful native wildflowers. Excellent honey plant.'},
+  {name:'Goldenrod',sci:'Solidago',months:[7,8,9,10],bloom_season:'Summer – Fall',peak_bloom:'August – September',pollinator:'Yes – bees, butterflies, beneficial wasps',planted:'',evergreen:'Deciduous',deer:'High – avoided',rabbit:'High',water:'Low',sun:'Full Sun',size:'2–4 ft',growth:'Fast',zone:'3–9',origin:'Native N. America',family:'Asteraceae',notes:'Vital late-season pollen source for bees preparing for winter.'},
+  {name:'Wild Rose',sci:'Rosa nutkana',months:[5,6],bloom_season:'Late Spring – Early Summer',peak_bloom:'May – June',pollinator:'Yes – bees, butterflies',planted:'',evergreen:'Deciduous',deer:'Moderate – thorns help',rabbit:'Moderate',water:'Low to Moderate',sun:'Full Sun to Part Shade',size:'3–8 ft',growth:'Moderate',zone:'3–9',origin:'Native PNW',edible:'Rosehips edible; very high in vitamin C',family:'Rosaceae'},
+  {name:'Scotch Broom',sci:'Cytisus scoparius',months:[4,5,6],bloom_season:'Spring',peak_bloom:'April – May',pollinator:'Yes – bees',planted:'',evergreen:'Semi-Evergreen',deer:'High – avoided',rabbit:'High',water:'Low',sun:'Full Sun',size:'3–9 ft',growth:'Fast',zone:'5–8',origin:'Europe (invasive in PNW)',family:'Fabaceae',notes:'Invasive in the PNW — beautiful but spreads aggressively. Note if seen nearby; do not plant.'},
+  {name:'Salmonberry',sci:'Rubus spectabilis',months:[4,5,6,7],bloom_season:'Spring – Early Summer',peak_bloom:'April',pollinator:'Yes – hummingbirds, bees',planted:'',evergreen:'Deciduous',deer:'Moderate',rabbit:'Moderate',water:'Moderate to Wet',sun:'Full Sun to Part Shade',size:'5–10 ft',growth:'Fast',zone:'5–9',origin:'Native PNW',edible:'Berries edible; salmon-colored fruit',family:'Rosaceae'},
+];
+
+// ── STATE & CONSTANTS ──
+const STATUS_CLASSES = {Planned:'s-planned', Ordered:'s-ordered', 'In Ground':'s-inground', Established:'s-estab'};
+let state = {search:'', month:'', pollinator:false, planted:false, deerResistant:false, myGarden:false, view:'cards'};
+let acOpen = false, acFocused = -1, acResults = [];
+let currentModalName = null;
+const curMonth = new Date().getMonth() + 1;
+
+// set badge
+document.getElementById('plant-count-badge').textContent = PLANTS.length + ' Plants';
+
+// ── WIKIPEDIA IMAGE LOADING ──
+async function loadWikiImages() {
+  const need = PLANTS.filter(p => !p.img);
+  if (!need.length) return;
+  const batchSize = 50;
+  for (let i = 0; i < need.length; i += batchSize) {
+    const batch = need.slice(i, i + batchSize);
+    const titles = batch.map(p => p.sci.split(' ').slice(0,2).join(' ')).join('|');
+    try {
+      const url = `https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&pithumbsize=500&format=json&origin=*&titles=${encodeURIComponent(titles)}`;
+      const r = await fetch(url);
+      if (!r.ok) continue;
+      const d = await r.json();
+      const pages = d.query?.pages || {};
+      Object.values(pages).forEach(page => {
+        if (!page.thumbnail?.source) return;
+        // match by first word of title (genus)
+        const titleGenus = page.title.toLowerCase().split(' ')[0];
+        const plant = batch.find(p => p.sci.toLowerCase().startsWith(titleGenus));
+        if (plant && !plant.img) {
+          plant.img = page.thumbnail.source;
+          // update any already-rendered elements
+          document.querySelectorAll('[data-plant-name]').forEach(el => {
+            if (el.dataset.plantName === plant.name) {
+              const imgEl = el.querySelector('.lazy-plant-img');
+              if (imgEl && !imgEl.src) imgEl.src = plant.img;
+              const placeholder = el.querySelector('.card-img-placeholder');
+              if (placeholder && plant.img) {
+                const img = document.createElement('img');
+                img.src = plant.img;
+                img.loading = 'lazy';
+                img.alt = plant.name;
+                img.className = 'lazy-plant-img';
+                img.onerror = function(){ this.parentNode.innerHTML = '<div class="card-img-placeholder">🌿</div>'; };
+                placeholder.parentNode.replaceChild(img, placeholder);
+              }
+            }
+          });
+        }
+      });
+    } catch(e) {}
+  }
+}
+
+// ── GARDEN TRACKER (localStorage) ──
+const GARDEN_KEY = 'portAngelesGarden';
+function loadGarden() {
+  try { return JSON.parse(localStorage.getItem(GARDEN_KEY)) || {statuses:{},notes:{}}; } catch(e) { return {statuses:{},notes:{}}; }
+}
+function saveGarden(d) { localStorage.setItem(GARDEN_KEY, JSON.stringify(d)); }
+function getStatus(name) { return loadGarden().statuses[name] || null; }
+function setStatus(name, val) { const d=loadGarden(); if(val) d.statuses[name]=val; else delete d.statuses[name]; saveGarden(d); }
+function getNotes(name) { return loadGarden().notes[name] || []; }
+function addNote(name, text) { const d=loadGarden(); if(!d.notes[name]) d.notes[name]=[]; d.notes[name].unshift({ts:new Date().toISOString(),text}); saveGarden(d); }
+function deleteNote(name, idx) { const d=loadGarden(); if(d.notes[name]) { d.notes[name].splice(idx,1); if(!d.notes[name].length) delete d.notes[name]; saveGarden(d); } }
+function fmtDate(ts) { return new Date(ts).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }
+function exportGardenData() {
+  const d = loadGarden();
+  if (!Object.keys(d.statuses).length && !Object.keys(d.notes).length) { alert('No garden data yet — start tracking plants first!'); return; }
+  const blob = new Blob([JSON.stringify(d,null,2)],{type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download='port-angeles-garden-'+new Date().toISOString().slice(0,10)+'.json'; a.click(); URL.revokeObjectURL(url);
+}
+
+// ── FILTERS ──
+function isPollinator(p) { return p.pollinator && p.pollinator.toLowerCase().startsWith('yes'); }
+function isDeerResistant(p) { return p.deer && p.deer.toLowerCase().startsWith('high'); }
+function filteredPlants() {
+  const garden = loadGarden();
+  return PLANTS.filter(p => {
+    if (state.search) { const q=state.search.toLowerCase(); if (!p.name.toLowerCase().includes(q) && !p.sci.toLowerCase().includes(q)) return false; }
+    if (state.month && (!p.months || !p.months.includes(+state.month))) return false;
+    if (state.pollinator && !isPollinator(p)) return false;
+    if (state.planted && p.planted !== 'Y') return false;
+    if (state.deerResistant && !isDeerResistant(p)) return false;
+    if (state.myGarden && !garden.statuses[p.name]) return false;
+    return true;
+  });
+}
+function toggleFilter(type) {
+  state[type] = !state[type];
+  const map = {pollinator:'poll-btn', planted:'planted-btn', deerResistant:'deer-btn', myGarden:'garden-btn'};
+  document.getElementById(map[type]).classList.toggle('active', state[type]);
+  updateFilterToggleBtnState();
+  render();
+}
+function toggleFilterDrawer() {
+  const d = document.getElementById('filter-drawer');
+  d.classList.toggle('open');
+}
+function updateFilterToggleBtnState() {
+  const btn = document.getElementById('filter-toggle-btn');
+  if (btn) btn.classList.toggle('has-active', state.pollinator || state.planted || state.deerResistant || state.myGarden || !!state.month);
+}
+function setView(v) {
+  state.view = v;
+  document.getElementById('view-cards').classList.toggle('active', v==='cards');
+  document.getElementById('view-cal').classList.toggle('active', v==='calendar');
+  document.getElementById('cards-view').style.display = v==='cards' ? '' : 'none';
+  document.getElementById('calendar-view').style.display = v==='calendar' ? 'block' : 'none';
+  render();
+}
+
+// ── RESISTANCE HELPER ──
+function resistanceLevel(text) {
+  if (!text) return 'unknown';
+  const t = text.toLowerCase();
+  if (t.startsWith('high')) return 'high';
+  if (t.startsWith('moderate')) return 'medium';
+  if (t.startsWith('low')) return 'low';
+  return 'unknown';
+}
+function resistancePips(level) {
+  const filled = level==='high' ? 3 : level==='medium' ? 2 : level==='low' ? 1 : 0;
+  const cls = 'res-'+level;
+  return `<div class="resistance-bar ${cls}">${[1,2,3].map(i=>`<div class="res-pip${i<=filled?' filled':''}"></div>`).join('')}</div>`;
+}
+
+// ── CARD IMAGE HTML ──
+function cardImgHtml(p) {
+  if (p.img) {
+    return `<div class="card-img-placeholder">🌿</div><img src="${escHtml(p.img)}" alt="${escHtml(p.name)}" loading="lazy" class="lazy-plant-img">`;
+  }
+  return `<div class="card-img-placeholder">🌿</div>`;
+}
+
+// ── RENDER ──
+function render() {
+  const plants = filteredPlants();
+  const garden = loadGarden();
+
+  // results bar
+  document.getElementById('results-bar').textContent = plants.length === PLANTS.length
+    ? `Showing all ${PLANTS.length} plants`
+    : `Showing ${plants.length} of ${PLANTS.length} plants`;
+
+  if (state.view === 'cards') {
+    renderCards(plants, garden);
+  } else {
+    renderCalendar(plants, garden);
+  }
+}
+
+function renderCards(plants, garden) {
+  const container = document.getElementById('cards-view');
+  if (!plants.length) {
+    container.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--ink-light)"><div style="font-size:40px;margin-bottom:12px">🌿</div><div style="font-family:Cormorant Garamond,serif;font-size:20px;margin-bottom:6px">No plants found</div><div style="font-size:14px">Try adjusting your filters</div></div>';
+    return;
+  }
+  container.innerHTML = plants.map((p, i) => {
+    const idx = PLANTS.indexOf(p);
+    const status = getStatus(p.name);
+    const gardenTag = status ? `<span class="tag tag-${STATUS_CLASSES[status.status]?.replace('s-','') || 'muted'}">${status.status}</span>` : '';
+    const plantedTag = p.planted === 'Y' && !status ? `<span class="tag tag-planted">Our Yard</span>` : '';
+    const pollTag = isPollinator(p) ? `<span class="tag tag-green">🐝 Pollinator</span>` : '';
+    const deerLvl = resistanceLevel(p.deer);
+    const deerTag = deerLvl === 'high' ? `<span class="tag tag-deer">🦌 Resistant</span>` : '';
+    const bloomTag = p.bloom_season && p.bloom_season !== '—' ? `<span class="tag tag-muted">${escHtml(p.bloom_season)}</span>` : '';
+
+    return `<div class="plant-card" data-plant-name="${escHtml(p.name)}" onclick="openModal(${idx})" style="animation-delay:${Math.min(i*30,600)}ms">
+  <div class="card-img-wrap">
+    ${cardImgHtml(p)}
+    <div class="card-img-gradient"></div>
+    <div class="card-name-block">
+      <div class="card-name">${escHtml(p.name)}</div>
+      <span class="card-sci">${escHtml(p.sci)}</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="card-tags">${gardenTag}${plantedTag}${pollTag}${deerTag}${bloomTag}</div>
+    ${p.months && p.months.length ? `<div class="card-bloom">Blooms ${escHtml(p.peak_bloom || p.bloom_season || '')}</div>` : ''}
+  </div>
+</div>`;
+  }).join('');
+}
+
+function renderCalendar(plants, garden) {
+  // month overview bars
+  const counts = Array(12).fill(0);
+  plants.forEach(p => { (p.months||[]).forEach(m => { if(m>=1&&m<=12) counts[m-1]++; }); });
+  const maxCount = Math.max(...counts, 1);
+  document.getElementById('month-summary').innerHTML = MONTH_SHORT.map((name,i) => {
+    const h = Math.max(Math.round((counts[i]/maxCount)*40), 2);
+    const active = state.month == (i+1) ? ' active' : '';
+    return `<div class="mo-col${active}" onclick="clickMonthSummary(${i+1})">
+  <div class="mo-label">${name}</div>
+  <div class="mo-bar-wrap"><div class="mo-bar" style="height:${h}px;background:${MONTH_COLORS[i]};opacity:${counts[i]?1:0.25}"></div></div>
+  <div class="mo-count">${counts[i]||''}</div>
+</div>`;
+  }).join('');
+
+  for (let i=1;i<=12;i++) {
+    const el = document.getElementById('th-'+i);
+    if (el) el.classList.toggle('cur', i===curMonth);
+  }
+
+  const sorted = [...plants].sort((a,b) => {
+    const am = (a.months&&a.months.length) ? Math.min(...a.months) : 13;
+    const bm = (b.months&&b.months.length) ? Math.min(...b.months) : 13;
+    return am - bm;
+  });
+
+  document.getElementById('timeline-body').innerHTML = sorted.map(p => {
+    const gi = PLANTS.indexOf(p);
+    const months = p.months || [];
+    const status = getStatus(p.name);
+    const thumbHtml = p.img
+      ? `<div class="tl-thumb-img" style="background-image:url('${escHtml(p.img)}')"></div>`
+      : `<div class="tl-thumb">🌿</div>`;
+    const cells = Array.from({length:12},(_,mi) => {
+      const m = mi+1;
+      return months.includes(m)
+        ? `<div class="tl-month-cell" style="background:${MONTH_COLORS[mi]}"></div>`
+        : `<div class="tl-month-cell"></div>`;
+    }).join('');
+    return `<div class="tl-row" onclick="openModal(${gi})">
+  <div class="tl-name-cell">${thumbHtml}<div class="tl-name-text"><div class="tl-plant-name">${escHtml(p.name)}</div><div class="tl-plant-sci">${escHtml(p.sci)}</div></div></div>
+  ${cells}
+</div>`;
+  }).join('');
+}
+
+function clickMonthSummary(m) {
+  const cur = state.month == m;
+  state.month = cur ? '' : m;
+  document.getElementById('month-filter').value = cur ? '' : m;
+  updateFilterToggleBtnState();
+  render();
+}
+
+// ── MODAL ──
+function openModal(idx) {
+  const p = PLANTS[idx];
+  if (!p) return;
+  currentModalName = p.name;
+
+  // image
+  const imgWrap = document.getElementById('modal-img');
+  const closeBtn = imgWrap.querySelector('.modal-close-btn');
+  if (p.img) {
+    imgWrap.innerHTML = `<button class="modal-close-btn" onclick="closeModalDirect()" aria-label="Close">✕</button><img src="${escHtml(p.img)}" alt="${escHtml(p.name)}" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    imgWrap.innerHTML = `<button class="modal-close-btn" onclick="closeModalDirect()" aria-label="Close">✕</button><div class="modal-img-placeholder">🌿</div>`;
+  }
+
+  const plantedTag = p.planted==='Y' ? '<span class="tag tag-planted">✓ Our Yard</span>' : '';
+  const evTag = p.evergreen ? `<span class="tag tag-muted">${escHtml(p.evergreen)}</span>` : '';
+  const pollTag = isPollinator(p) ? `<span class="tag tag-green">🐝 ${escHtml(p.pollinator)}</span>` : `<span class="tag tag-muted">${escHtml(p.pollinator||'Pollinator data unavailable')}</span>`;
+
+  const months = p.months || [];
+  const tlCells = MONTH_SHORT.map((mn,i) => {
+    const m = i+1;
+    return months.includes(m)
+      ? `<div class="mtl-cell bloom" style="background:${MONTH_COLORS[i]}">${mn}</div>`
+      : `<div class="mtl-cell no-bloom">${mn}</div>`;
+  }).join('');
+
+  const deerLvl = resistanceLevel(p.deer);
+  const rabbitLvl = resistanceLevel(p.rabbit);
+
+  let body = `<div class="modal-title">${escHtml(p.name)}</div>
+<div class="modal-sci">${escHtml(p.sci)}</div>
+<div class="modal-tags">${plantedTag}${evTag}${pollTag}</div>`;
+
+  if (months.length) {
+    body += `<div class="section"><div class="section-title">🌸 Bloom Season</div>
+<div class="modal-timeline">${tlCells}</div>
+<div class="info-grid">
+  <div class="info-item"><div class="info-label">Season</div><div class="info-value">${escHtml(p.bloom_season||'—')}</div></div>
+  <div class="info-item"><div class="info-label">Peak Bloom</div><div class="info-value">${escHtml(p.peak_bloom||'—')}</div></div>
+</div></div>`;
+  }
+
+  body += `<div class="section"><div class="section-title">🦌 Deer &amp; Rabbit Resistance</div>
+<div class="deer-section">
+  <div class="deer-row">
+    <div class="deer-row-label">Deer</div>
+    ${resistancePips(deerLvl)}
+    <div class="deer-resistance">${escHtml(p.deer||'—')}</div>
+  </div>
+  <div class="deer-row">
+    <div class="deer-row-label">Rabbit</div>
+    ${resistancePips(rabbitLvl)}
+    <div class="deer-resistance">${escHtml(p.rabbit||'—')}</div>
+  </div>
+</div></div>`;
+
+  body += `<div class="section"><div class="section-title">🌱 Care &amp; Characteristics</div>
+<div class="info-grid">
+  <div class="info-item"><div class="info-label">Water</div><div class="info-value">${escHtml(p.water||'—')}</div></div>
+  <div class="info-item"><div class="info-label">Sun</div><div class="info-value">${escHtml(p.sun||'—')}</div></div>
+  <div class="info-item"><div class="info-label">Mature Size</div><div class="info-value">${escHtml(p.size||'—')}</div></div>
+  <div class="info-item"><div class="info-label">Growth Rate</div><div class="info-value">${escHtml(p.growth||'—')}</div></div>
+  <div class="info-item"><div class="info-label">USDA Zone</div><div class="info-value">${escHtml(p.zone||'—')}</div></div>
+  <div class="info-item"><div class="info-label">Origin</div><div class="info-value">${escHtml(p.origin||'—')}</div></div>
+</div></div>`;
+
+  if (p.edible || p.toxicity) {
+    body += `<div class="section"><div class="section-title">🍃 Edible &amp; Safety</div><div class="info-grid">
+${p.edible ? `<div class="info-item"><div class="info-label">Edible / Medicinal</div><div class="info-value">${escHtml(p.edible)}</div></div>` : ''}
+${p.toxicity ? `<div class="info-item"><div class="info-label">Toxicity</div><div class="info-value" style="color:var(--red)">${escHtml(p.toxicity)}</div></div>` : ''}
+</div></div>`;
+  }
+
+  if (p.notes) {
+    body += `<div class="section"><div class="section-title">📋 Notes</div><div class="notes-box">${escHtml(p.notes)}</div></div>`;
+  }
+
+  body += '<div id="garden-panel-wrap"></div>';
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  renderGardenPanel(p.name);
+}
+
+// ── GARDEN PANEL ──
+function renderGardenPanel(name) {
+  const wrap = document.getElementById('garden-panel-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = buildGardenHTML(name) + buildNotesHTML(name);
+}
+function buildGardenHTML(name) {
+  const status = getStatus(name);
+  let html = '<div class="section" id="garden-section"><div class="section-title">🌿 Garden Tracker</div>';
+  if (!status) {
+    html += '<button class="track-btn" onclick="startTracking()">+ Track this plant</button>';
+  } else {
+    html += '<div class="status-pills">';
+    ['Planned','Ordered','In Ground','Established'].forEach(s => {
+      const cls = STATUS_CLASSES[s];
+      const active = status.status === s ? ' active' : '';
+      html += `<button class="status-pill ${cls}${active}" data-s="${escHtml(s)}" onclick="updateStatusCur(this.dataset.s)">${s}</button>`;
+    });
+    html += '</div><div class="track-fields">'
+      + `<input class="track-input" type="date" id="track-date" data-field="date" value="${escHtml(status.date||'')}" onchange="updateFieldCur(this.dataset.field,this.value)">`
+      + `<input class="track-input" type="text" id="track-loc" data-field="location" value="${escHtml(status.location||'')}" oninput="updateFieldCur(this.dataset.field,this.value)" placeholder="Garden location (e.g. South bed)">`
+      + '</div>';
+    const updated = status.updated ? `<span class="track-updated">Updated ${fmtDate(status.updated)}</span>` : '<span></span>';
+    html += `<div class="track-footer">${updated}<button class="untrack-btn" onclick="stopTracking()">Remove from tracker</button></div>`;
+  }
+  return html + '</div>';
+}
+function buildNotesHTML(name) {
+  const notes = getNotes(name);
+  let html = '<div class="section" id="notes-section"><div class="section-title">📝 My Notes</div>';
+  if (notes.length) {
+    html += '<div class="notes-log">' + notes.map((n,i) =>
+      `<div class="note-entry"><div class="note-header"><span class="note-date">${fmtDate(n.ts)}</span><button class="note-del" data-i="${i}" onclick="removeNoteCur(+this.dataset.i)">×</button></div><div class="note-text">${escHtml(n.text)}</div></div>`
+    ).join('') + '</div>';
+  }
+  html += '<div class="note-add-row"><textarea id="note-input" class="note-textarea" placeholder="Add a note… e.g. Planted in south bed, first blooms appeared" rows="2"></textarea><button class="note-add-btn" onclick="submitNoteCur()">Add</button></div>';
+  return html + '</div>';
+}
+function startTracking() {
+  if (!currentModalName) return;
+  setStatus(currentModalName, {status:'Planned', date:'', location:'', updated:new Date().toISOString()});
+  renderGardenPanel(currentModalName); render();
+}
+function stopTracking() {
+  if (!currentModalName) return;
+  if (!confirm('Remove from your garden tracker?')) return;
+  setStatus(currentModalName, null);
+  renderGardenPanel(currentModalName); render();
+}
+function updateStatusCur(status) {
+  if (!currentModalName) return;
+  const d = loadGarden();
+  if (d.statuses[currentModalName]) { d.statuses[currentModalName].status = status; d.statuses[currentModalName].updated = new Date().toISOString(); saveGarden(d); renderGardenPanel(currentModalName); render(); }
+}
+function updateFieldCur(field, val) {
+  if (!currentModalName) return;
+  const d = loadGarden();
+  if (d.statuses[currentModalName]) { d.statuses[currentModalName][field] = val; d.statuses[currentModalName].updated = new Date().toISOString(); saveGarden(d); }
+}
+function submitNoteCur() {
+  if (!currentModalName) return;
+  const inp = document.getElementById('note-input');
+  const text = inp ? inp.value.trim() : '';
+  if (!text) return;
+  addNote(currentModalName, text); renderGardenPanel(currentModalName);
+}
+function removeNoteCur(idx) {
+  if (!currentModalName) return;
+  deleteNote(currentModalName, idx); renderGardenPanel(currentModalName);
+}
+function closeModal(e) { if (e.target === document.getElementById('modal-overlay')) closeModalDirect(); }
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+  currentModalName = null;
+  render();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+
+// ── AUTOCOMPLETE ──
+const searchEl = document.getElementById('search');
+const acDropdown = document.getElementById('ac-dropdown');
+function renderAutocomplete(q) {
+  if (!q) { closeAutocomplete(); return; }
+  const ql = q.toLowerCase();
+  acResults = PLANTS.filter(p => p.name.toLowerCase().includes(ql) || p.sci.toLowerCase().includes(ql)).slice(0,8);
+  if (!acResults.length) { acDropdown.innerHTML = '<div class="ac-empty">No plants found</div>'; }
+  else {
+    acDropdown.innerHTML = acResults.map((p,i) => {
+      const gi = PLANTS.indexOf(p);
+      const thumbHtml = p.img
+        ? `<img class="ac-thumb" src="${escHtml(p.img)}" alt="" loading="lazy">`
+        : `<div class="ac-thumb">🌿</div>`;
+      const nm = escHtml(p.name).replace(new RegExp('('+escRe(ql)+')','gi'), '<mark style="background:oklch(90% 0.1 138 / 0.5);border-radius:2px">$1</mark>');
+      return `<div class="ac-item" data-idx="${gi}" onmousedown="acSelect(${gi})">${thumbHtml}<div><div class="ac-name">${nm}</div><div class="ac-sci">${escHtml(p.sci)}</div></div></div>`;
+    }).join('');
+  }
+  acFocused=-1; acDropdown.classList.add('open'); acOpen=true;
+}
+function closeAutocomplete() { acDropdown.classList.remove('open'); acOpen=false; acFocused=-1; }
+function acSelect(idx) { closeAutocomplete(); searchEl.value=''; state.search=''; render(); setTimeout(()=>openModal(idx),50); }
+function escRe(s){ return s.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'); }
+
+searchEl.addEventListener('input', e => { state.search=e.target.value; render(); renderAutocomplete(e.target.value); });
+searchEl.addEventListener('keydown', e => {
+  if (!acOpen) return;
+  const items = acDropdown.querySelectorAll('.ac-item');
+  if (e.key==='ArrowDown') { e.preventDefault(); acFocused=Math.min(acFocused+1,items.length-1); items.forEach((el,i)=>el.classList.toggle('focused',i===acFocused)); }
+  else if (e.key==='ArrowUp') { e.preventDefault(); acFocused=Math.max(acFocused-1,-1); items.forEach((el,i)=>el.classList.toggle('focused',i===acFocused)); }
+  else if (e.key==='Enter'&&acFocused>=0) { e.preventDefault(); acSelect(parseInt(items[acFocused].dataset.idx)); }
+  else if (e.key==='Escape') closeAutocomplete();
+});
+document.addEventListener('click', e => { if (!searchEl.contains(e.target)&&!acDropdown.contains(e.target)) closeAutocomplete(); });
+document.getElementById('month-filter').addEventListener('change', e => { state.month=e.target.value; updateFilterToggleBtnState(); render(); });
+
+function escHtml(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+// ── INIT ──
+render();
+loadWikiImages();
+</script>
+</body>
+</html>
